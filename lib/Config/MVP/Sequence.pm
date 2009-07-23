@@ -1,5 +1,6 @@
 package Config::MVP::Sequence;
 use Moose;
+# ABSTRACT: an ordered set of named configuration sections
 
 use Tie::IxHash;
 use Config::MVP::Section;

@@ -1,5 +1,6 @@
 package Config::MVP::Section;
 use Moose;
+# ABSTRACT: one section of an MVP configuration sequence
 
 has name    => (is => 'ro', isa => 'Str',       required => 1);
 has package => (is => 'ro', isa => 'ClassName', required => 0);
@@ -25,6 +26,7 @@ sub add_setting {
   if (grep { $_ eq $name } @$mva) {
     my $array = $self->payload->{$name} ||= [];
     push @$array, $value;
+    return;
   }
 
   if (exists $self->payload->{$name}) {

@@ -1,25 +1,15 @@
 package Config::MVP::Assembler;
 use Moose;
+# ABSTRACT: multivalue-property config-loading state machine
 
 use Config::MVP::Sequence;
 use Config::MVP::Section;
-
-=head1 NAME
-
-Config::MVP::Assembler - multivalue-property config-loading state machine
 
 =head1 DESCRIPTION
 
 MVP is a state machine for loading configuration (or other information) for
 libraries.  It expects to generate a list of named sections, each of which
 relates to a Perl namespace and contains a set of named parameters.
-
-=head1 METHODS
-
-=head2 multivalue_args
-
-This method returns a list of property names which may have multiple entries in
-the root section.
 
 =cut
 
@@ -38,13 +28,13 @@ has starting_section_name => (
 
 sub default_starting_section_name { '_' }
 
-has starting_multivalue_args => (
+has starting_section_multivalue_args => (
   is  => 'ro',
   isa => 'ArrayRef',
-  builder => 'default_starting_multivalue_args',
+  builder => 'default_starting_section_multivalue_args',
 );
 
-sub default_starting_multivalue_args { [] }
+sub default_starting_section_multivalue_args { [] }
 
 has _package_mva => (
   is  => 'ro',
@@ -61,7 +51,7 @@ sub current_section {
 
   my $section = Config::MVP::Section->new({
     name            => $self->starting_section_name,
-    multivalue_args => $self->starting_multivalue_args,
+    multivalue_args => $self->starting_section_multivalue_args,
   });
 
   $self->sequence->add_section($section);
@@ -102,25 +92,6 @@ sub set_value {
 
   $self->current_section->add_setting($name => $value);
 }
-
-=head1 AUTHOR
-
-Ricardo SIGNES, C<< <rjbs@cpan.org> >>
-
-=head1 BUGS
-
-Please report any bugs or feature requests through the web interface at
-L<http://rt.cpan.org>.  I will be notified, and then you'll automatically be
-notified of progress on your bug as I make changes.
-
-=head1 COPYRIGHT
-
-Copyright 2008 Ricardo SIGNES, all rights reserved.
-
-This program is free software; you may redistribute it and/or modify it
-under the same terms as Perl itself.
-
-=cut
 
 no Moose;
 1;
