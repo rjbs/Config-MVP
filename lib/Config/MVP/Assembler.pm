@@ -13,10 +13,24 @@ relates to a Perl namespace and contains a set of named parameters.
 
 =cut
 
+has sequence_class => (
+  is   => 'ro',
+  isa  => 'ClassName',
+  lazy => 1,
+  default => 'Config::MVP::Sequence',
+);
+
+has section_class => (
+  is   => 'ro',
+  isa  => 'ClassName',
+  lazy => 1,
+  default => 'Config::MVP::Section',
+);
+
 has sequence => (
   is  => 'ro',
   isa => 'Config::MVP::Sequence',
-  default  => sub { Config::MVP::Sequence->new },
+  default  => sub { $_[0]->sequence_class->new },
   init_arg => undef,
 );
 
@@ -50,7 +64,7 @@ sub change_section {
     };
   };
 
-  my $section = Config::MVP::Section->new({
+  my $section = $self->section_class->new({
     name    => $name,
     package => $package,
     aliases => $pkg_data->{alias},
