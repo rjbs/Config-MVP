@@ -2,6 +2,13 @@ package Config::MVP::Sequence;
 use Moose;
 # ABSTRACT: an ordered set of named configuration sections
 
+=head1 DESCRIPTION
+
+For the most part, you can just consult L<Config::MVP> or
+L<Config::MVP::Assembler>.
+
+=cut
+
 use Tie::IxHash;
 use Config::MVP::Section;
 
