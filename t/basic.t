@@ -9,6 +9,12 @@ require_ok( 'Config::MVP::Assembler' );
 
 my $assembler = Config::MVP::Assembler->new;
 
+my $section = Config::MVP::Section->new({
+  name => '_',
+});
+
+$assembler->sequence->add_section($section);
+
 $assembler->set_value(foo => 10);
 $assembler->set_value(bar => 11);
 

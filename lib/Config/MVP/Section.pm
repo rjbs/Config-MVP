@@ -18,8 +18,17 @@ has payload => (
   default  => sub { {} },
 );
 
+has aliases => (
+  is  => 'ro',
+  isa => 'HashRef',
+  default => sub { {} },
+);
+
 sub add_setting {
   my ($self, $name, $value) = @_;
+
+  my $alias = $self->aliases->{ $name };
+  $name = $alias if defined $alias;
 
   my $mva = $self->multivalue_args;
 
