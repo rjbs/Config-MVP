@@ -88,7 +88,6 @@ sub change_section {
 
   # We already inspected this plugin.
   my $pkg_data = do {
-    local $@;
     eval "require $package; 1"
       or confess "couldn't load plugin $name given in config: $@";
 
