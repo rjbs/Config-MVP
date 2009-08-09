@@ -86,25 +86,9 @@ sub change_section {
 
   my $package = $self->expand_package($package_moniker);
 
-  # We already inspected this plugin.
-  my $pkg_data = do {
-    confess "illegal package name $package"
-      unless Params::Util::_CLASS($package);
-
-    eval "require $package; 1"
-      or confess "couldn't load plugin $name given in config: $@";
-
-    {
-      alias =>   eval { $package->mvp_aliases         } || {},
-      multi => [ eval { $package->mvp_multivalue_args } ],
-    };
-  };
-
   my $section = $self->section_class->new({
     name    => $name,
     package => $package,
-    aliases => $pkg_data->{alias},
-    multivalue_args => $pkg_data->{multi},
   });
 
   $self->sequence->add_section($section);
