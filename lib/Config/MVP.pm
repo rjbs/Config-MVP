@@ -119,7 +119,7 @@ what's going on.
 Every section of the config file was converted into a section in the MVP
 sequence.  Each section has a unique name, which defaults to the name of the
 INI section.  Each section is also associated with a package, which was
-expanded from the INI sectio name.  The way that names are expanded can be
+expanded from the INI section name.  The way that names are expanded can be
 customized by subclassing the assembler.
 
 Every section also has a payload -- a hashref of settings.  Note that every
