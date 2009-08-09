@@ -158,6 +158,29 @@ more information on this, look at the docs for the specific components.
 
 =head1 WHAT NEXT?
 
+=head2 Making Packages work with MVP
+
+Any package can be used as part of an MVP section.  Packages can provide some
+methods to help MVP work with them.  It isn't a problem if they are not defined
+
+=head3 mvp_aliases
+
+This method should return a hashref of name remappings.  For example, if it
+returned this hashref:
+
+  {
+    file => 'files',
+    path => 'files',
+  }
+
+Then attempting to set either the "file" or "path" setting for the section
+would actually set the "files" setting.
+
+=head3 mvp_multivalue_args
+
+This method should return a list of setting names that may have multiple values
+and that will always be stored in an arrayref.
+
 =head2 The Assembler
 
 L<Config::MVP::Assembler|Config::MVP::Assembler> is a state machine that makes
