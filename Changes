@@ -1,5 +1,8 @@
 Revision history for {{$dist->name}}
 
+0.092211  2009-08-09
+          much more documentation yet again
+
 0.092210  2009-08-09
           package interrogation (for mvp_* settings) is now done in Section
             initialization; this means you don't need to use the Assembler to
