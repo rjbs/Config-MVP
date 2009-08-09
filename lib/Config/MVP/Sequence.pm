@@ -4,14 +4,19 @@ use Moose;
 
 =head1 DESCRIPTION
 
-For the most part, you can just consult L<Config::MVP> or
-L<Config::MVP::Assembler>.
+A Config::MVP::Sequence is an ordered set of configuration sections, each of
+which has a name unique within the sequence.
+
+For the most part, you can just consult L<Config::MVP> to understand what this
+class is and how it's used.
 
 =cut
 
 use Tie::IxHash;
 use Config::MVP::Section;
 
+# This is a private attribute and should not be documented for futzing-with,
+# most likely. -- rjbs, 2009-08-09
 has sections => (
   isa => 'HashRef[Config::MVP::Section]',
   reader   => '_sections',
@@ -22,23 +27,15 @@ has sections => (
   },
 );
 
-sub section_named {
-  my ($self, $name) = @_;
-  my $sections = $self->_sections;
+=method add_section
 
-  return unless exists $sections->{ $name };
-  return $sections->{ $name };
-}
+  $sequence->add_section($section);
 
-sub section_names {
-  my ($self) = @_;
-  return keys %{ $self->_sections };
-}
+This method adds the given section to the end of the sequence.  If the sequence
+already contains a section with the same name as the new section, an exception
+will be raised.
 
-sub sections {
-  my ($self) = @_;
-  return values %{ $self->_sections };
-}
+=cut
 
 sub add_section {
   my ($self, $section) = @_;
@@ -47,6 +44,49 @@ sub add_section {
   confess "already have a section named $name" if $self->_sections->{ $name };
 
   $self->_sections->{ $name } = $section;
+}
+
+=method section_named
+
+  my $section = $sequence->section_named( $name );
+
+This method returns the section with the given name, if one exists in the
+sequence.  If no such section exists, the method returns false.
+
+=cut
+
+sub section_named {
+  my ($self, $name) = @_;
+  my $sections = $self->_sections;
+
+  return unless exists $sections->{ $name };
+  return $sections->{ $name };
+}
+
+=method section_names
+
+  my @names = $sequence->section_names;
+
+This method returns a list of the names of the sections, in order.
+
+=cut
+
+sub section_names {
+  my ($self) = @_;
+  return keys %{ $self->_sections };
+}
+
+=method sections
+
+  my @sections = $sequence->sections;
+
+This method returns the section objects, in order.
+
+=cut
+
+sub sections {
+  my ($self) = @_;
+  return values %{ $self->_sections };
 }
 
 no Moose;
