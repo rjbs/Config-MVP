@@ -46,6 +46,23 @@ sub add_section {
   $self->_sections->{ $name } = $section;
 }
 
+=method delete_section
+
+  my $deleted_section = $sequence->delete_section( $name );
+
+This method removes a section from the sequence and returns the removed
+section.  If no section existed, the method returns false.
+
+=cut
+
+sub delete_section {
+  my ($self, $name) = @_;
+  my $sections = $self->_sections;
+
+  return unless exists $sections->{ $name };
+  return delete $sections->{ $name };
+}
+
 =method section_named
 
   my $section = $sequence->section_named( $name );
