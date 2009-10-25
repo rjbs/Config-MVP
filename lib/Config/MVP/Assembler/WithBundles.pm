@@ -1,6 +1,10 @@
-package Config::MVP::Assembler::WithBundles
+package Config::MVP::Assembler::WithBundles;
 use Moose::Role;
 # ABSTRACT: a role to make assemblers expand bundles
+
+sub bundle_role {
+  'Config::MVP::SectionBundle'
+}
 
 after end_section => sub {
   my ($self) = @_;
@@ -13,7 +17,7 @@ after end_section => sub {
   {
     local $@;
     return unless eval {
-      $last->package->does('Config::MVP::Assembler::WithBundles::Bundle');
+      $last->package->does( $self->bundle_role );
     }; 
   } 
       
@@ -33,7 +37,7 @@ after end_section => sub {
     });
 
     Carp::confess('bundles may not include bundles')
-      if $package->does('Config::MVP::Assembler::WithBundles::Bundle');
+      if $package->does( $self->bundle_role );
 
     # XXX: Clearly this is a hack. -- rjbs, 2009-08-24
     for my $name (keys %$payload) {
@@ -51,7 +55,7 @@ sub expand_bundles {
   my @new_plugins;
 
   for my $plugin (@$plugins) {
-    if (eval { $plugin->[1]->does('Config::MVP::Assembler::WithBundles::Bundle') }) {
+    if (eval { $plugin->[1]->does( $self->bundle_role ) }) {
     } else {
       push @new_plugins, $plugin;
     }
