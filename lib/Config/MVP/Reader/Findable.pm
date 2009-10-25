@@ -1,8 +1,7 @@
-package Dist::Zilla::ConfigRole::Findable;
+package Config::MVP::Reader::Findable;
 use Moose::Role;
-# ABSTRACT: a config class that Dist::Zilla::Config::Finder can find
+# ABSTRACT: a config class that Config::MVP::Reader::Finder can find
 
-requires 'can_be_found';
 requires 'default_extension';
 
 sub can_be_found {

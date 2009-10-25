@@ -1,13 +1,7 @@
-package Dist::Zilla::Util::MVPAssembler;
-use Moose;
-extends 'Config::MVP::Assembler';
-# ABSTRACT: Dist::Zilla-specific subclass of Config::MVP::Assembler
+package Config::MVP::Assembler::WithBundles
+use Moose::Role;
+# ABSTRACT: a role to make assemblers expand bundles
 
-sub expand_package {
-  my $str = Dist::Zilla::Util->expand_config_package_name($_[1]);
-  return $str;
-} 
-  
 after end_section => sub {
   my ($self) = @_;
 
@@ -19,7 +13,7 @@ after end_section => sub {
   {
     local $@;
     return unless eval {
-      $last->package->does('Dist::Zilla::Role::PluginBundle');
+      $last->package->does('Config::MVP::Assembler::WithBundles::Bundle');
     }; 
   } 
       
@@ -39,7 +33,7 @@ after end_section => sub {
     });
 
     Carp::confess('bundles may not include bundles')
-      if $package->does('Dist::Zilla::Role::PluginBundle');
+      if $package->does('Config::MVP::Assembler::WithBundles::Bundle');
 
     # XXX: Clearly this is a hack. -- rjbs, 2009-08-24
     for my $name (keys %$payload) {
@@ -57,7 +51,7 @@ sub expand_bundles {
   my @new_plugins;
 
   for my $plugin (@$plugins) {
-    if (eval { $plugin->[1]->does('Dist::Zilla::Role::PluginBundle') }) {
+    if (eval { $plugin->[1]->does('Config::MVP::Assembler::WithBundles::Bundle') }) {
     } else {
       push @new_plugins, $plugin;
     }

@@ -1,8 +1,8 @@
-package Dist::Zilla::Config;
+package Config::MVP::Reader;
 use Moose::Role;
 # ABSTRACT: stored configuration loader role
 
-use Dist::Zilla::Util::MVPAssembler;
+use Config::MVP::Assembler;
 
 =head1 DESCRIPTION
 
@@ -23,21 +23,10 @@ has assembler => (
   is   => 'ro',
   isa  => 'Config::MVP::Assembler',
   lazy => 1,
-  default => sub {
-    my $assembler = Dist::Zilla::Util::MVPAssembler->new;
-
-    my $root = $assembler->section_class->new({
-      name => '_',
-      aliases => { author => 'authors' },
-      multivalue_args => [ qw(authors) ],
-    });
-
-    $assembler->sequence->add_section($root);
-
-    return $assembler;
-  }
+  builder => 'build_assembler',
 );
 
+requires 'build_assembler';
 requires 'read_config';
 
 no Moose::Role;

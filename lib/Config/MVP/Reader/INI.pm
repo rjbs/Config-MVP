@@ -1,18 +1,18 @@
-package Dist::Zilla::Config::INI;
+package Config::MVP::Reader::INI;
 use Moose;
 with qw(
-  Dist::Zilla::Config
-  Dist::Zilla::ConfigRole::Findable
+  Config::MVP::Reader
+  Config::MVP::Reader::Findable
 );
-# ABSTRACT: the reader for dist.ini files
+# ABSTRACT: an MVP config reader for .ini files
 
 use Config::INI::MVP::Reader;
   
 =head1 DESCRIPTION
     
-Dist::Zilla::Config reads in the F<dist.ini> file for a distribution.  It uses
-L<Config::INI::MVP::Reader> to do most of the heavy lifting, using the helpers
-set up in L<Dist::Zilla::Config>.
+Config::MVP::Reader::INI reads F<.ini> files containing MVP-style
+configuration.  It uses L<Config::INI::MVP::Reader> to do most of the heavy
+lifting.
     
 =cut
 
