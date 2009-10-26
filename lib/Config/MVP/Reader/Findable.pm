@@ -2,6 +2,8 @@ package Config::MVP::Reader::Findable;
 use Moose::Role;
 # ABSTRACT: a config class that Config::MVP::Reader::Finder can find
 
+use File::Spec;
+
 requires 'default_extension';
 
 sub can_be_found {
@@ -28,7 +30,7 @@ sub filename_from_args {
     $filename .= ".$extension" if defined $extension;
   }
   
-  return $arg->{root}->file($filename);
+  return File::Spec->catfile("$arg->{root}", $filename);
 } 
 
 no Moose::Role;

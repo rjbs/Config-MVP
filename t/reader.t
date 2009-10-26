@@ -20,12 +20,8 @@ use lib 't/lib';
   sub build_assembler { CMRFBA->new; }
 }
 
-use Path::Class;
-
-my $dir = dir('t/eg');
-
 my $config = CMRFB->new->read_config({
-  root     => $dir,
+  root     => 't/eg',
   basename => 'config',
 });
 
