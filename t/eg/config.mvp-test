@@ -4,14 +4,15 @@ y = 2
 z = 3
 y = 4
 
-[Foo::Baz]
+[Foo::Baz bz]
 single = 1
 multi  = 2
 multi  = 3
+
+[Foo::Boondle]
 
 [Foo::Quux]
 a = 1
 b = 2
 c = 3
-
 
