@@ -1,5 +1,8 @@
 Revision history for {{$dist->name}}
 
+0.092990  2009-10-26
+          add Config::MVP::Reader and associated packages, from Dist::Zilla
+
 0.092360  2009-08-24
           add "begin_section" and "end_section" methods, mostly for wrapping
           with extra behavior in subclasses

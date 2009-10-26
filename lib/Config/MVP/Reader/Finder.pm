@@ -36,7 +36,7 @@ sub _which_plugin {
   confess "multiple possible config plugins found: @plugins" if @plugins > 1;
 
   return $plugins[0];
-}     
+}
 
 sub read_config {
   my ($self, $arg) = @_;
