@@ -18,10 +18,23 @@ The default implementation looks for a method callde C<mvp_bundle_config>, but
 C<package_bundle_method> can be replaced to allow for other bundle-identifying
 information.
 
-Bundles are expanded by having their bundle method called.  The arguments
-passed to this method B<are likely to change>.  Currently, it's passed a
-hashref containing the bundle section's payload and a C<plugin_name> entry with
-the section name.
+Bundles are expanded by having their bundle method called like this:
+
+  my @new_config = $bundle_section->package->$method({
+    name    => $bundle_section->name,
+    package => $bundle_section->package,
+    payload => $bundle_section->payload,
+  });
+
+(We pass a hashref rather than a section so that bundles can be expanded
+synthetically without having to laboriously create a new Section.)
+
+The returned C<@new_config> is a list of arrayrefs, each of which has three
+entries:
+
+  [ $name, $package, $payload ]
+
+Each arrayref is converted into a section in the sequence.
 
 =cut
 
@@ -43,8 +56,9 @@ after end_section => sub {
   $seq->delete_section($last->name);
 
   my @bundle_config = $last->package->$method({
-    plugin_name => $last->name,
-    %{ $last->payload },
+    name    => $last->name,
+    package => $last->package,
+    payload => $last->payload,
   });
 
   for my $plugin (@bundle_config) {
