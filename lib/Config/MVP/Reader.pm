@@ -26,7 +26,8 @@ has assembler => (
   builder => 'build_assembler',
 );
 
-requires 'build_assembler';
+sub build_assembler { Config::MVP::Assembler->new; }
+
 requires 'read_config';
 
 no Moose::Role;

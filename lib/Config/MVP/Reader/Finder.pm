@@ -30,6 +30,8 @@ sub _which_plugin {
                 grep { $_->isa('Moose::Object') } # no roles!
                 $self->module_pluggable_object->plugins;
 
+  my @orig = $self->module_pluggable_object->plugins;
+
   confess "no viable configuration could be found" unless @plugins;
   confess "multiple possible config plugins found: @plugins" if @plugins > 1;
 
@@ -41,10 +43,9 @@ sub read_config {
 
   my $plugin = $self->_which_plugin($arg);
 
-  return $plugin->new->read_config($arg);
+  return $plugin->new({ assembler => $self->assembler })->read_config($arg);
 }
 
 no Moose;
 __PACKAGE__->meta->make_immutable;
 1;
-
