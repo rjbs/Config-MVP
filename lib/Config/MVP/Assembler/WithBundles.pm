@@ -55,32 +55,47 @@ after end_section => sub {
 
   $seq->delete_section($last->name);
 
-  my @bundle_config = $last->package->$method({
+  $self->_add_bundle_contents($method, {
     name    => $last->name,
     package => $last->package,
     payload => $last->payload,
   });
+};
 
-  for my $plugin (@bundle_config) {
+sub _add_bundle_contents {
+  my ($self, $method, $arg) = @_;
+
+  my @bundle_config = $arg->{package}->$method($arg);
+
+  PLUGIN: for my $plugin (@bundle_config) {
     my ($name, $package, $payload) = @$plugin;
 
-    my $section = $self->section_class->new({
-      name    => $name,
-      package => $package,
-    });
+    Class::MOP::load_class($package);
 
-    Carp::confess('bundles may not include bundles')
-      if defined $self->package_bundle_method( $package );
+    if (my $method = $self->package_bundle_method( $package )) {
+      $self->_add_bundle_contents($method, {
+        name    => $name,
+        package => $package,
+        payload => $payload,
+      });
+    } else {
+      my $section = $self->section_class->new({
+        name    => $name,
+        package => $package,
+      });
 
-    # XXX: Clearly this is a hack. -- rjbs, 2009-08-24
-    for my $name (keys %$payload) {
-      my @v = ref $payload->{$name} ? @{$payload->{$name}} : $payload->{$name};
-      $section->add_value($name => $_) for @v;
+      # XXX: Clearly this is a hack. -- rjbs, 2009-08-24
+      for my $name (keys %$payload) {
+        my @v = ref $payload->{$name}
+              ? @{$payload->{$name}}
+              : $payload->{$name};
+        $section->add_value($name => $_) for @v;
+      }
+
+      $self->sequence->add_section($section);
     }
-
-    $self->sequence->add_section($section);
   }
-};
+}
 
 no Moose;
 1;

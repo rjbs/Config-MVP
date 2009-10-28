@@ -9,7 +9,7 @@ single = 1
 multi  = 2
 multi  = 3
 
-[Foo::Boondle]
+[Foo::Metaboondle]
 
 [Foo::Quux]
 a = 1
