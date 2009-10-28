@@ -1,5 +1,8 @@
 Revision history for {{$dist->name}}
 
+0.093000  2009-10-27
+          bundles for Assembler::WithBundles can now be nested
+
 0.092990  2009-10-26
           add Config::MVP::Reader and associated packages, from Dist::Zilla
 
