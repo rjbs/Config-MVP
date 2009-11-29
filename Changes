@@ -1,5 +1,10 @@
 Revision history for {{$dist->name}}
 
+{{$NEXT}}
+
+0.093330  2009-11-29 17:40:08 America/New_York
+          rebuild to include META.yml for sake of cpandeps scanner
+
 0.093120  2009-11-08
           add missing prereq
 
