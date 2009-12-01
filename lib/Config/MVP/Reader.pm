@@ -45,7 +45,7 @@ sub build_assembler { Config::MVP::Assembler->new; }
 This method, B<which must be implemented by classes including this role>, is
 passed a hashref of arguments and returns a Config::MVP::Sequence.
 
-Valid arguments include:
+Likely arguments include:
 
   root     - the name of the directory in which to look
   filename - the filename in that directory to read

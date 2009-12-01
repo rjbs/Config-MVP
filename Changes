@@ -1,6 +1,7 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+          added Config::MVP::Reader::Hash for use by adapter writers
 
 0.093330  2009-11-29 17:40:08 America/New_York
           rebuild to include META.yml for sake of cpandeps scanner
