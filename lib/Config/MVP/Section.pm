@@ -83,8 +83,9 @@ method, it default to an empty hashref.
 =cut
 
 has aliases => (
-  is  => 'ro',
-  isa => 'HashRef',
+  is   => 'ro',
+  isa  => 'HashRef',
+  lazy => 1,
   default => sub {
     my ($self) = @_;
 
