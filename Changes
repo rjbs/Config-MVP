@@ -1,6 +1,8 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+
+0.100780  2010-03-19 22:16:16 America/New_York
           the alias attr on Section is now lazy so that mvp_aliases is called
 
 0.093350  2009-12-01 06:58:48 America/New_York
