@@ -126,6 +126,9 @@ added will result in an exception.
 sub add_value {
   my ($self, $name, $value) = @_;
 
+  confess "can't add values to finalized section " . $self->name
+    if $self->is_finalized;
+
   my $alias = $self->aliases->{ $name };
   $name = $alias if defined $alias;
 
@@ -145,17 +148,25 @@ sub add_value {
   $self->payload->{$name} = $value;
 }
 
+has is_finalized => (
+  is  => 'ro',
+  isa => 'Bool',
+  traits   => ['Bool'],
+  init_arg => undef,
+  default  => 0,
+  handles  => { finalize => 'set' },
+);
+
 sub _BUILD_package_settings {
   my ($self) = @_;
 
-  return unless defined (my $pkg  = $self->package);
+  return unless defined (my $pkg = $self->package);
 
-  # We already inspected this plugin.
   confess "illegal package name $pkg" unless Params::Util::_CLASS($pkg);
 
   my $name = $self->name;
   eval "require $pkg; 1"
-    or confess "couldn't load plugin $name given in config: $@";
+    or confess "couldn't load package $pkg for plugin $name: $@";
 
   # We call these accessors for lazy attrs to ensure they're initialized from
   # defaults if needed.  Crash early! -- rjbs, 2009-08-09

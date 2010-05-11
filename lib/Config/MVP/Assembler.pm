@@ -149,6 +149,8 @@ sub end_section {
   Carp::confess("can't end a section because no section is active")
     unless $self->current_section;
 
+  $self->current_section->finalize;
+
   $self->_between_sections(1);
 }
 
