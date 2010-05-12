@@ -149,6 +149,7 @@ has sequence => (
   predicate => '_sequence_has_been_set',
   reader    => '_sequence',
   writer    => '__set_sequence',
+  clearer   => '_clear_sequence',
 );
 
 sub _set_sequence {

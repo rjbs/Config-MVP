@@ -120,6 +120,9 @@ sub delete_section {
   my $sections = $self->_sections;
 
   return unless exists $sections->{ $name };
+
+  $sections->{ $name }->_clear_sequence;
+
   return delete $sections->{ $name };
 }
 
