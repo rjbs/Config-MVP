@@ -87,6 +87,8 @@ will be raised.
 sub add_section {
   my ($self, $section) = @_;
 
+  confess "can't add sections to finalized sequence" if $self->is_finalized;
+
   my $name = $section->name;
   confess "already have a section named $name" if $self->_sections->{ $name };
 
@@ -111,6 +113,10 @@ section.  If no section existed, the method returns false.
 
 sub delete_section {
   my ($self, $name) = @_;
+
+  confess "can't delete sections from finalized sequence"
+    if $self->is_finalized;
+
   my $sections = $self->_sections;
 
   return unless exists $sections->{ $name };
