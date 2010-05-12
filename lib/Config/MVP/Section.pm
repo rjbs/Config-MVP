@@ -110,6 +110,67 @@ has payload => (
   default  => sub { {} },
 );
 
+=attr is_finalized
+
+This attribute is true if the section has been marked finalized, which will
+prevent any new values from being added to it.  It can be set with the
+C<finalize> method.
+
+=cut
+
+has is_finalized => (
+  is  => 'ro',
+  isa => 'Bool',
+  traits   => [ 'Bool' ],
+  init_arg => undef,
+  default  => 0,
+  handles  => { finalize => 'set' },
+);
+
+before finalize => sub {
+  my ($self) = @_;
+
+  confess "can't finalize a Config::MVP::Section that hasn't been sequenced"
+    unless $self->sequence;
+};
+
+=attr sequence
+
+This attributes points to the sequence into which the section has been
+assembled.  It may be unset if the section has been created but not yet placed
+in a sequence.
+
+=cut
+
+has sequence => (
+  is  => 'ro',
+  isa => 'Config::MVP::Sequence',
+  weak_ref  => 1,
+  predicate => '_sequence_has_been_set',
+  reader    => '_sequence',
+  writer    => '__set_sequence',
+);
+
+sub _set_sequence {
+  my ($self, $seq) = @_;
+  confess "can't change Config::MVP::Section's sequence after it's set"
+    if $self->sequence;
+  $self->__set_sequence($seq);
+}
+
+sub sequence {
+  my ($self) = @_;
+  return undef unless $self->_sequence_has_been_set;
+  my $seq = $self->_sequence;
+
+  unless (defined $seq) {
+    confess "tried to access sequence for a Config::MVP::Section, "
+          . "but it has been destroyed"
+  }
+
+  return $seq;
+}
+
 =method add_value
 
   $section->add_value( $name => $value );
@@ -147,15 +208,6 @@ sub add_value {
 
   $self->payload->{$name} = $value;
 }
-
-has is_finalized => (
-  is  => 'ro',
-  isa => 'Bool',
-  traits   => ['Bool'],
-  init_arg => undef,
-  default  => 0,
-  handles  => { finalize => 'set' },
-);
 
 sub _BUILD_package_settings {
   my ($self) = @_;

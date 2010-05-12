@@ -14,17 +14,64 @@ class is and how it's used.
 
 use Tie::IxHash;
 use Config::MVP::Section;
+use Moose::Util::TypeConstraints ();
 
 # This is a private attribute and should not be documented for futzing-with,
 # most likely. -- rjbs, 2009-08-09
 has sections => (
-  isa => 'HashRef[Config::MVP::Section]',
+  isa      => 'HashRef[Config::MVP::Section]',
   reader   => '_sections',
   init_arg => undef,
   default  => sub {
     tie my %section, 'Tie::IxHash';
     return \%section;
   },
+);
+
+has assembler => (
+  is   => 'ro',
+  isa  => Moose::Util::TypeConstraints::class_type('Config::MVP::Assembler'),
+  weak_ref => 1,
+  predicate => '_assembler_has_been_set',
+  reader    => '_assembler',
+  writer    => '__set_assembler',
+);
+
+sub _set_assembler {
+  my ($self, $assembler) = @_;
+  confess "can't change Config::MVP::Sequence's assembler after it's set"
+    if $self->assembler;
+  $self->__set_assembler($assembler);
+}
+
+sub assembler {
+  my ($self) = @_;
+  return undef unless $self->_assembler_has_been_set;
+  my $assembler = $self->_assembler;
+
+  unless (defined $assembler) {
+    confess "tried to access assembler for a Config::MVP::Sequence, "
+          . "but it has been destroyed"
+  }
+
+  return $assembler;
+}
+
+=attr is_finalized
+
+This attribute is true if the sequence has been marked finalized, which will
+prevent any changes (via methods like C<add_section> or C<delete_section>).  It
+can be set with the C<finalize> method.
+
+=cut
+
+has is_finalized => (
+  is  => 'ro',
+  isa => 'Bool',
+  traits   => [ 'Bool' ],
+  init_arg => undef,
+  default  => 0,
+  handles  => { finalize => 'set' },
 );
 
 =method add_section
@@ -42,6 +89,13 @@ sub add_section {
 
   my $name = $section->name;
   confess "already have a section named $name" if $self->_sections->{ $name };
+
+  $section->_set_sequence($self);
+
+  if (my @names = $self->section_names) {
+    my $last_section = $self->section_named( $names[-1] );
+    $last_section->finalize unless $last_section->is_finalized;
+  }
 
   $self->_sections->{ $name } = $section;
 }

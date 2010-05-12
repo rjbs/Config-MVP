@@ -27,6 +27,8 @@ $assembler->add_value(z => -123);
 $assembler->change_section('Foo::Bar', 'baz');
 $assembler->add_value(x => 1);
 
+$assembler->finalize;
+
 my @sections = $assembler->sequence->sections;
 
 is(@sections, 3, "there are three sections");

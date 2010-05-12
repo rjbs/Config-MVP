@@ -88,9 +88,16 @@ instance of the assembler's C<sequence_class>.
 has sequence => (
   is  => 'ro',
   isa => 'Config::MVP::Sequence',
-  default  => sub { $_[0]->sequence_class->new },
+  default  => sub { $_[0]->sequence_class->new({ assembler => $_[0] }) },
   init_arg => undef,
+  handles  => [ qw(is_finalized finalize) ],
 );
+
+before finalize => sub {
+  my ($self) = @_;
+
+  $self->end_section if $self->current_section;
+};
 
 =method begin_section
 
