@@ -2,6 +2,8 @@ package Config::MVP::Assembler::WithBundles;
 use Moose::Role;
 # ABSTRACT: a role to make assemblers expand bundles
 
+use Params::Util qw(_HASHLIKE _ARRAYLIKE);
+
 =head1 DESCRIPTION
 
 Config::MVP::Assembler::WithBundles is a role to be composed into a
@@ -84,12 +86,20 @@ sub _add_bundle_contents {
         package => $package,
       });
 
-      # XXX: Clearly this is a hack. -- rjbs, 2009-08-24
-      for my $name (keys %$payload) {
-        my @v = ref $payload->{$name}
-              ? @{$payload->{$name}}
-              : $payload->{$name};
-        $section->add_value($name => $_) for @v;
+      if (_HASHLIKE($payload)) {
+        # XXX: Clearly this is a hack. -- rjbs, 2009-08-24
+        for my $name (keys %$payload) {
+          my @v = ref $payload->{$name}
+                ? @{$payload->{$name}}
+                : $payload->{$name};
+          $section->add_value($name => $_) for @v;
+        }
+      } elsif (_ARRAYLIKE($payload)) {
+        for (my $i = 0; $i < @$payload; $i += 2) {
+          $section->add_value(@$payload[ $i, $i + 1 ]);
+        }
+      } else {
+        Carp::confess("don't know how to interpret section payload $payload");
       }
 
       $self->sequence->add_section($section);
