@@ -36,7 +36,8 @@ entries:
 
   [ $name, $package, $payload ]
 
-Each arrayref is converted into a section in the sequence.
+Each arrayref is converted into a section in the sequence.  The C<$payload>
+should be an arrayref of name/value pairs to be added to the created section.
 
 =cut
 
