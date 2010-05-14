@@ -105,6 +105,8 @@ before finalize => sub {
 
   $assembler->begin_section($package_moniker);
 
+  $assembler->begin_section( \$package );
+
 This method tells the assembler that it should begin work on a new section with
 the given identifier.  If it is already working on a section, an error will be
 raised.  See C<L</change_section>> for a method to begin a new section, ending
@@ -112,7 +114,10 @@ the current one if needed.
 
 The package moniker is expanded by the C<L</expand_package>> method.  The name,
 if not given, defaults to the package moniker.  These data are used to create a
-new section and the section is added to the end of the sequence.
+new section and the section is added to the end of the sequence.  If the
+package argument is a reference, it is used as the literal value for the
+package, and no expansion is performed.  If it is a reference to undef, a
+section with no package is created.
 
 =cut
 
@@ -130,11 +135,13 @@ sub begin_section {
 
   $name = $package_moniker unless defined $name and length $name;
 
-  my $package = $self->expand_package($package_moniker);
+  my $package = ref($package_moniker)
+              ? $$package_moniker
+              : $self->expand_package($package_moniker);
 
   my $section = $self->section_class->new({
     name    => $name,
-    package => $package,
+    (defined $package ? (package => $package) : ()),
   });
 
   $self->_between_sections(0);
