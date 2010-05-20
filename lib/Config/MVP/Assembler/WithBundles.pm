@@ -20,7 +20,16 @@ The default implementation looks for a method callde C<mvp_bundle_config>, but
 C<package_bundle_method> can be replaced to allow for other bundle-identifying
 information.
 
-Bundles are expanded by having their bundle method called like this:
+Bundles are expanded by a call to the assembler's
+C<replace_bundle_with_contents> method, like this:
+
+  $assembler->replace_bundle_with_contents($section, $method);
+
+=head2 replace_bundle_with_contents
+
+The default C<replace_bundle_with_contents> method deletes the section from the
+sequence.  It then gets a description of the new sections to introduce, like
+this:
 
   my @new_config = $bundle_section->package->$method({
     name    => $bundle_section->name,
@@ -56,12 +65,20 @@ after end_section => sub {
   return unless $last->package;
   return unless my $method = $self->package_bundle_method($last->package);
 
-  $seq->delete_section($last->name);
+  $self->replace_bundle_with_contents($last, $method);
+};
+
+sub replace_bundle_with_contents {
+  my ($self, $bundle_sec, $method) = @_;
+
+  my $seq = $self->sequence;
+
+  $seq->delete_section($bundle_sec->name);
 
   $self->_add_bundle_contents($method, {
-    name    => $last->name,
-    package => $last->package,
-    payload => $last->payload,
+    name    => $bundle_sec->name,
+    package => $bundle_sec->package,
+    payload => $bundle_sec->payload,
   });
 };
 

@@ -2,14 +2,20 @@ Revision history for {{$dist->name}}
 
 {{$NEXT}}
           Sections, Sequences, and Assemblers  can now be finalized
+
           the Assembler finalizes things as appropriate
+
           Sections can refer to their containing Sequence
+
           Sequences can refer to their constructing Assembler
 
           bundles now can (and should) provide payload as an arrayref
 
           Assembler->begin_section can be given a reference to a package name
           to skip rewriting
+
+          the replace_bundle_with_contents method is used by
+          Assembler::WithBundles to convert bundle sections into contents
 
 0.100780  2010-03-19 22:16:16 America/New_York
           the alias attr on Section is now lazy so that mvp_aliases is called
