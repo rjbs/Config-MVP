@@ -1,6 +1,8 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+
+0.101410  2010-05-21 22:09:48 America/New_York
           Sections, Sequences, and Assemblers  can now be finalized
 
           the Assembler finalizes things as appropriate
