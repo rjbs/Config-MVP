@@ -15,9 +15,7 @@ Reader is responsible for opening, reading, and interpreting a file.
 
 The L<assembler> attribute must be a Config::MVP::Assembler, has a sensible
 default that will handle the standard needs of a config loader.  Namely, it
-will be pre-loaded with a starting section for root configuration.  That
-starting section will alias C<author> to C<authors> and will set that up as a
-multivalue argument.
+will be pre-loaded with a starting section for root configuration.
 
 =cut
 
