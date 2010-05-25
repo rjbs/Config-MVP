@@ -69,8 +69,8 @@ sub _which_reader {
   confess "multiple possible config plugins found" if @options > 1;
 
   return {
-    package  => $options[0][0],
-    location => $options[0][1],
+    'package'  => $options[0][0],
+    'location' => $options[0][1],
   };
 }
 
