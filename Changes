@@ -1,6 +1,8 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+
+1.101450  2010-05-25 18:13:19 America/New_York
           [BREAKS BACKWARD COMPATIBILITY]
 
           The Reader interface has been substantially overhauled.
