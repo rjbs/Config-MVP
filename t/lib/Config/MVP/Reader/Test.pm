@@ -1,13 +1,13 @@
 package Config::MVP::Reader::Test;
 use Moose;
-with qw(Config::MVP::Reader Config::MVP::Reader::Findable);
+with qw(Config::MVP::Reader Config::MVP::Reader::Findable::ByExtension);
 
 sub default_extension { 'mvp-test' }
 
-sub read_config {
-  my ($self, $arg) = @_;
+sub read_into_assembler {
+  my ($self, $location, $assembler) = @_;
 
-  my $filename = $self->filename_from_args($arg);
+  my $filename = $location;
 
   open my $fh, '<', $filename or die "can't read $filename: $!";
 
@@ -16,19 +16,19 @@ sub read_config {
     next if $line =~ m{\A\s*(;.+)?\z}; # skip blanks, comments
 
     if ($line =~ m{\A(\S+)\s*=\s*(\S+)\z}) {
-      $self->assembler->add_value($1, $2);
+      $assembler->add_value($1, $2);
       next LINE;
     }
 
     if ($line =~ m{\A\[(\S+)(?:\s+(\S+?))?\]\z}) {
-      $self->assembler->change_section($1, $2);
+      $assembler->change_section($1, $2);
       next LINE;
     }
 
     die "don't know how to handle this line: $line\n";
   }
 
-  return $self->assembler->sequence;
+  return $assembler->sequence;
 }
 
 1;

@@ -20,10 +20,7 @@ use lib 't/lib';
   sub build_assembler { CMRFBA->new; }
 }
 
-my $config = CMRFB->new->read_config({
-  root     => 't/eg',
-  basename => 'config',
-});
+my $config = CMRFB->read_config('t/eg/config');
 
 my @sections = $config->sections;
 

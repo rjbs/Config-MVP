@@ -47,28 +47,50 @@ has _module_pluggable_object => (
   },
 );
 
-sub _which_plugin {
-  my ($self, $arg) = @_;
+sub _which_reader {
+  my ($self, $location) = @_;
 
-  my @plugins = grep { $_->can_be_found($arg) }
-                grep { $_->does('Config::MVP::Reader::Findable') }
-                grep { $_->isa('Moose::Object') } # no roles!
-                $self->_module_pluggable_object->plugins;
+  my @options;
 
-  my @orig = $self->_module_pluggable_object->plugins;
+  for my $pkg ($self->_module_pluggable_object->plugins) {
+    next unless $pkg->isa('Moose::Object');
+    next unless $pkg->does('Config::MVP::Reader::Findable');
 
-  confess "no viable configuration could be found" unless @plugins;
-  confess "multiple possible config plugins found: @plugins" if @plugins > 1;
+    my $location = $pkg->refined_location($location);
 
-  return $plugins[0];
+    next unless defined $location;
+
+    push @options, [ $pkg, $location ];
+  }
+
+  confess "no viable configuration could be found" unless @options;
+
+  # XXX: Improve this error message -- rjbs, 2010-05-24
+  confess "multiple possible config plugins found" if @options > 1;
+
+  return {
+    package  => $options[0][0],
+    location => $options[0][1],
+  };
 }
 
 sub read_config {
-  my ($self, $arg) = @_;
+  my ($self, $location, $arg) = @_;
+  $self = $self->new unless blessed($self);
+  $arg ||= {};
 
-  my $plugin = $self->_which_plugin($arg);
+  local $arg->{assembler} = $arg->{assembler} || $self->build_assembler;
 
-  return $plugin->new({ assembler => $self->assembler })->read_config($arg);
+  my $which  = $self->_which_reader($location);
+  my $reader = $which->{package}->new;
+
+  return $reader->read_config( $which->{location}, $arg );
+}
+
+sub build_assembler { }
+
+sub read_into_assembler {
+  die "This method should never be called or reachable";
 }
 
 no Moose;

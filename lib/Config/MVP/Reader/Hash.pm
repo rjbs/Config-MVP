@@ -5,7 +5,7 @@ with qw(Config::MVP::Reader);
 
 =head1 SYNOPSIS
 
-  my $sequence = Config::MVP::Reader::Hash->new->read_config({ hash => \%h });
+  my $sequence = Config::MVP::Reader::Hash->new->read_config( \%config );
 
 =head1 DESCRIPTION
 
@@ -18,12 +18,10 @@ L<__package> entry is found.
 
 =cut
 
-sub read_config {
-  my ($self, $arg) = @_;
+sub read_into_assembler {
+  my ($self, $location, $assembler) = @_;
 
-  confess "no hash given to $self" unless my $hash = $arg->{hash};
-
-  my $assembler = $self->assembler;
+  confess "no hash given to $self" unless my $hash = $location;
 
   for my $name (keys %$hash) {
     my $payload = { %{ $hash->{ $name } } };

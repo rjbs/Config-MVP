@@ -22,24 +22,22 @@ use lib 't/lib';
 
 {
   my $config = CMRFB->new->read_config({
-    hash => {
-      'Foo::Bar' => {
-        x => 1,
-        y => [ 2, 4 ],
-        z => 3,
-      },
-      'bz' => {
-        __package => 'Foo::Baz',
-        single => 1,
-        multi  => [ 2, 3 ],
-      },
-      'Foo::Metaboondle' => { },
-      'Foo::Quux' => {
-        a => 1,
-        b => 2,
-        c => 3,
-      }
+    'Foo::Bar' => {
+      x => 1,
+      y => [ 2, 4 ],
+      z => 3,
     },
+    'bz' => {
+      __package => 'Foo::Baz',
+      single => 1,
+      multi  => [ 2, 3 ],
+    },
+    'Foo::Metaboondle' => { },
+    'Foo::Quux' => {
+      a => 1,
+      b => 2,
+      c => 3,
+    }
   });
 
   my @sections = $config->sections;
@@ -73,9 +71,7 @@ use lib 't/lib';
 
 {
   my $config = CMRFB->new->read_config({
-    hash => {
-      'Foo::BoondleHref' => { },
-    },
+    'Foo::BoondleHref' => { },
   });
 
   my @sections = $config->sections;
@@ -89,9 +85,7 @@ use lib 't/lib';
 
 {
   my $config = CMRFB->new->read_config({
-    hash => {
-      'Foo::BoondleHref' => { },
-    },
+    'Foo::BoondleHref' => { },
   });
 
   my @sections = $config->sections;

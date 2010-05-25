@@ -11,26 +11,13 @@ the L<Config::MVP|Config::MVP> system to load and validate its configuration.
 It delegates assembly of the configuration sequence to an Assembler.  The
 Reader is responsible for opening, reading, and interpreting a file.
 
-=attr assembler
-
-The L<assembler> attribute must be a Config::MVP::Assembler, has a sensible
-default that will handle the standard needs of a config loader.  Namely, it
-will be pre-loaded with a starting section for root configuration.
-
-=cut
-
-has assembler => (
-  is   => 'ro',
-  isa  => 'Config::MVP::Assembler',
-  lazy => 1,
-  builder => 'build_assembler',
-);
-
 =method build_assembler
 
-This is the builder for the C<assembler> attribute and must return a
-Config::MVP::Assembler object.  It's here so subclasses can produce assemblers
-of other classes or with pre-loaded sections.
+If no Assembler is provided to C<read_config>'s C<assembler> parameter, this
+method will be called on the Reader to construct one.
+
+It must return a Config::MVP::Assembler object, and by default will return an
+entirely generic one.
 
 =cut
 
@@ -38,19 +25,20 @@ sub build_assembler { Config::MVP::Assembler->new; }
 
 =method read_config
 
-  my $sequence = $reader->read_config(\%arg);
-
-This method, B<which must be implemented by classes including this role>, is
-passed a hashref of arguments and returns a Config::MVP::Sequence.
-
-Likely arguments include:
-
-  root     - the name of the directory in which to look
-  filename - the filename in that directory to read
+  my $sequence = $reader->read_config($location, \%arg);
 
 =cut
 
-requires 'read_config';
+sub read_config {
+  my ($self, $location, $arg) = @_;
+  $arg ||= {};
+
+  my $assembler = $arg->{assembler} || $self->build_assembler;
+
+  $self->read_into_assembler($location, $assembler);
+}
+
+requires 'read_into_assembler';
 
 no Moose::Role;
 1;
