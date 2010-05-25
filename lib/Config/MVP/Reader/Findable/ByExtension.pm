@@ -2,7 +2,7 @@ package Config::MVP::Reader::Findable::ByExtension;
 use Moose::Role;
 # ABSTRACT: a Findable Reader that looks for files by extension
 
-with 'Config::MVP::Reader::Findable';
+with qw(Config::MVP::Reader Config::MVP::Reader::Findable);
 
 use File::Spec;
 
