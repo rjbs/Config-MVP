@@ -1,6 +1,20 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+          [BREAKS BACKWARD COMPATIBILITY]
+
+          The Reader interface has been substantially overhauled.
+
+          Readers no longer have persistent Assembler, but now must be handed
+          one (or will generate one as needed)
+
+          the arguments for Reader->read_config have changed
+
+          classes implementing Reader are required to provide a
+          read_into_assembler method, now
+
+          Reader::Findable has been broken into Findable and
+          Findable::ByExtension
 
 0.101410  2010-05-21 22:09:48 America/New_York
           Sections, Sequences, and Assemblers  can now be finalized
