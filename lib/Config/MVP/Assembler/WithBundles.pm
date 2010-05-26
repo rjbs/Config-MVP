@@ -121,6 +121,7 @@ sub _add_bundle_contents {
       }
 
       $self->sequence->add_section($section);
+      $section->finalize;
     }
   }
 }
