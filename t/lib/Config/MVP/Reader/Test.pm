@@ -1,6 +1,7 @@
 package Config::MVP::Reader::Test;
 use Moose;
-with qw(Config::MVP::Reader Config::MVP::Reader::Findable::ByExtension);
+extends 'Config::MVP::Reader';
+with qw(Config::MVP::Reader::Findable::ByExtension);
 
 sub default_extension { 'mvp-test' }
 

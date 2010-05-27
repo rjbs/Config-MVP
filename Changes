@@ -1,6 +1,14 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+          [BREAKS BACKWARD COMPATIBILITY]
+
+          I apologize for breaking backcompat twice in a week.  I do not
+          expect this to happen again.  -- rjbs
+
+          Config::MVP::Reader is now a base class rather than a role.
+          This significantly simplifies the use of Config::MVP readers
+          and makes things easier to document.
 
 1.101451  2010-05-25 22:38:06 America/New_York
           always finalize sections added by bundles

@@ -1,6 +1,6 @@
 package Config::MVP::Reader::Finder;
 use Moose;
-with qw(Config::MVP::Reader);
+extends 'Config::MVP::Reader';
 # ABSTRACT: a reader that finds an appropriate file
 
 =head1 DESCRIPTION
@@ -13,9 +13,11 @@ found in the config root directory.  If exactly one findable configuration
 reader finds a file, it is used to read the file and the configuration sequence
 is returned.  Otherwise, an exception is raised.
 
-The Finder's assembler is passed to the Findable reader when it's instantiated.
-That means that a single subclass of Finder with its own assembler can use
-generic configuration readers to avoid needless, tiny subclasses.
+Config::MVP::Reader::Finder's C<build_assembler> method will decline a new
+assembler, so if none was passed to C<read_config>, the Findable reader to
+which reading is delegated will be responsible for building the assembler,
+unless a Finder subclass overrides C<build_assembler> to set a default across
+all possible delegates.
 
 =cut
 
@@ -26,7 +28,7 @@ use Module::Pluggable::Object;
 This is the default search path used to find configuration readers.  This
 method should return a list, and by default returns:
 
-  qw(Config::MVP::Reader)
+  qw( Config::MVP::Reader )
 
 =cut
 
@@ -90,7 +92,7 @@ sub read_config {
 sub build_assembler { }
 
 sub read_into_assembler {
-  die "This method should never be called or reachable";
+  confess "This method should never be called or reachable";
 }
 
 no Moose;

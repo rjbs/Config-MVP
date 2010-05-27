@@ -1,6 +1,6 @@
 package Config::MVP::Reader::Hash;
 use Moose;
-with qw(Config::MVP::Reader);
+extends 'Config::MVP::Reader';
 # ABSTRACT: a reader that tries to cope with a plain old hashref
 
 =head1 SYNOPSIS
