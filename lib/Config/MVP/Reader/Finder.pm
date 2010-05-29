@@ -22,6 +22,7 @@ all possible delegates.
 =cut
 
 use Module::Pluggable::Object;
+use Try::Tiny;
 
 =method default_search_path
 
@@ -76,6 +77,11 @@ sub _which_reader {
   };
 }
 
+has if_none => (
+  is  => 'ro',
+  isa => 'Maybe[Str|CodeRef]',
+);
+
 sub read_config {
   my ($self, $location, $arg) = @_;
   $self = $self->new unless blessed($self);
@@ -83,7 +89,14 @@ sub read_config {
 
   local $arg->{assembler} = $arg->{assembler} || $self->build_assembler;
 
-  my $which  = $self->_which_reader($location);
+  my $which  = try {
+    $self->_which_reader($location);
+  } catch {
+    die $_ unless $_ =~ /^no viable configuration/;
+    die $_ unless defined (my $handler = $self->if_none);
+    return $self->$handler($location, $arg);
+  };
+
   my $reader = $which->{package}->new;
 
   return $reader->read_config( $which->{location}, $arg );
