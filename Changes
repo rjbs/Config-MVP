@@ -2,6 +2,9 @@ Revision history for {{$dist->name}}
 
 {{$NEXT}}
 
+2.101480  2010-05-28 22:59:18 America/New_York
+          add an if_none callback to Reader::Finder; for now, private
+
 2.101460  2010-05-26 22:29:43 America/New_York
           [BREAKS BACKWARD COMPATIBILITY]
 
