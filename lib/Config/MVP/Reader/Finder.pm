@@ -89,13 +89,17 @@ sub read_config {
 
   local $arg->{assembler} = $arg->{assembler} || $self->build_assembler;
 
-  my $which  = try {
-    $self->_which_reader($location);
+  my $which;
+  my $instead;
+  try {
+    $which = $self->_which_reader($location);
   } catch {
     die $_ unless $_ =~ /^no viable configuration/;
     die $_ unless defined (my $handler = $self->if_none);
-    return $self->$handler($location, $arg);
+    $instead = $self->$handler($location, $arg);
   };
+
+  return $instead unless $which;
 
   my $reader = $which->{package}->new;
 
