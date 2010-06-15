@@ -1,6 +1,8 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+
+2.101650  2010-06-14 20:22:42 America/New_York
           require Moose 0.91 for native trait support
 
 2.101540  2010-06-03 00:28:57 America/New_York
