@@ -1,6 +1,7 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+          require Moose 0.91 for native trait support
 
 2.101540  2010-06-03 00:28:57 America/New_York
           improve if_none to return from the proper scope (i.e., now it works)

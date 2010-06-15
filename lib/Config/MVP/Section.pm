@@ -1,5 +1,5 @@
 package Config::MVP::Section;
-use Moose;
+use Moose 0.91;
 # ABSTRACT: one section of an MVP configuration sequence
 
 =head1 DESCRIPTION
