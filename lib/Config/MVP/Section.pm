@@ -1,5 +1,7 @@
 package Config::MVP::Section;
 use Moose 0.91;
+use Class::Load 0.06 ();
+
 # ABSTRACT: one section of an MVP configuration sequence
 
 =head1 DESCRIPTION
@@ -210,6 +212,18 @@ sub add_value {
   $self->payload->{$name} = $value;
 }
 
+sub missing_package {
+  my ( $self, $plugin, $package ) = @_ ;
+  confess "Package $package ( for plugin $plugin ) does not appear to be installed.\n"
+}
+
+sub load_package {
+  my ( $self, $plugin , $package ) = @_ ;
+  Class::Load::load_optional_class( $package ) or do {
+    $self->missing_package( $plugin, $package );
+  }
+}
+
 sub _BUILD_package_settings {
   my ($self) = @_;
 
@@ -217,9 +231,7 @@ sub _BUILD_package_settings {
 
   confess "illegal package name $pkg" unless Params::Util::_CLASS($pkg);
 
-  my $name = $self->name;
-  eval "require $pkg; 1"
-    or confess "couldn't load package $pkg for plugin $name: $@";
+  $self->load_package( $self->name , $pkg );
 
   # We call these accessors for lazy attrs to ensure they're initialized from
   # defaults if needed.  Crash early! -- rjbs, 2009-08-09
