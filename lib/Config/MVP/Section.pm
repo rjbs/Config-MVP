@@ -1,6 +1,8 @@
 package Config::MVP::Section;
 use Moose 0.91;
+
 use Class::Load 0.06 ();
+use Config::MVP::Error;
 
 # ABSTRACT: one section of an MVP configuration sequence
 
@@ -242,7 +244,10 @@ installed.  By default, it throws an exception.
 sub missing_package {
   my ($self, $package, $plugin) = @_ ;
 
-  confess "$package (for plugin $plugin) does not appear to be installed"
+  Config::MVP::Error->throw({
+    ident   => 'package not installed',
+    message => "$package (for plugin $plugin) does not appear to be installed",
+  });
 }
 
 sub _BUILD_package_settings {

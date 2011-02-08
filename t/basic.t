@@ -3,7 +3,8 @@ use strict;
 use warnings;
 use lib 't/lib';
 
-use Test::More tests => 11;
+use Test::More;
+use Test::Fatal;
 
 require_ok( 'Config::MVP::Assembler' );
 
@@ -44,3 +45,22 @@ is_deeply($sections[0]->payload, { bar => 11, foo => 10 });
 is_deeply($sections[1]->payload, { x => 10, y => [ 20, 30 ], z => -123 });
 is_deeply($sections[2]->payload, { x => 1 });
 
+{
+  my $assembler = Config::MVP::Assembler->new;
+
+  my $err = exception { $assembler->change_section('Foo::CompileError'); };
+  like($err, qr/"\$x"/, "strict failures are propagated");
+}
+
+{
+  my $assembler = Config::MVP::Assembler->new;
+
+  my $err = exception { $assembler->change_section('Foo::Missing'); };
+  is(
+    $err->ident,
+    'package not installed',
+    "we get a well-identifier 'not installed' exception",
+  );
+}
+
+done_testing;
