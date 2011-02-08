@@ -1,6 +1,8 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+          add Config::MVP::Error for common exceptions
+
           allow class loading and class-not-found handling to be subclassed
           (thanks, Kent Fredric!)
 
