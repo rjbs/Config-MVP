@@ -212,16 +212,37 @@ sub add_value {
   $self->payload->{$name} = $value;
 }
 
-sub missing_package {
-  my ( $self, $plugin, $package ) = @_ ;
-  confess "Package $package ( for plugin $plugin ) does not appear to be installed.\n"
-}
+=method load_package
+
+  $section->load_package($package, $plugin);
+
+This method is used to ensure that the given C<$package> is loaded, and is
+called whenever a section with a package is created.  By default, it delegates
+to L<Class::Load>.  If the package can't be found, it calls the
+L<missing_package> method.  Errors in compilation are not suppressed.
+
+=cut
 
 sub load_package {
-  my ( $self, $plugin , $package ) = @_ ;
-  Class::Load::load_optional_class( $package ) or do {
-    $self->missing_package( $plugin, $package );
-  }
+  my ($self, $package, $plugin) = @_;
+
+  Class::Load::load_optional_class($package)
+    or $self->missing_package($plugin, $package);
+}
+
+=method missing_package
+
+  $section->missing_package($package, $plugin);
+
+This method is called when C<load_package> encounters a package that is not
+installed.  By default, it throws an exception.
+
+=cut
+
+sub missing_package {
+  my ($self, $package, $plugin) = @_ ;
+
+  confess "$package (for plugin $plugin) does not appear to be installed"
 }
 
 sub _BUILD_package_settings {
@@ -231,7 +252,7 @@ sub _BUILD_package_settings {
 
   confess "illegal package name $pkg" unless Params::Util::_CLASS($pkg);
 
-  $self->load_package( $self->name , $pkg );
+  $self->load_package($pkg, $self->name);
 
   # We call these accessors for lazy attrs to ensure they're initialized from
   # defaults if needed.  Crash early! -- rjbs, 2009-08-09
