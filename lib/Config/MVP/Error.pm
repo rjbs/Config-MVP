@@ -15,6 +15,10 @@ with(
   'Role::Identifiable::HasIdent',
   'Role::HasMessage',
   'StackTrace::Auto',
+  'MooseX::OneArgNew' => {
+    type     => 'Str',
+    init_arg => 'ident',
+  },
 );
 
 no Moose;

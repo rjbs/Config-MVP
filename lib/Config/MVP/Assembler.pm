@@ -2,6 +2,7 @@ package Config::MVP::Assembler;
 use Moose;
 # ABSTRACT: multivalue-property config-loading state machine
 
+use Config::MVP::Error;
 use Config::MVP::Sequence;
 use Config::MVP::Section;
 
@@ -130,7 +131,7 @@ has _between_sections => (
 sub begin_section {
   my ($self, $package_moniker, $name) = @_;
 
-  Carp::confess("can't begin a new section with a section open")
+  Config::MVP::Error->throw("can't begin a new section while a section is open")
     if $self->current_section;
 
   $name = $package_moniker unless defined $name and length $name;
@@ -160,7 +161,7 @@ raised.
 sub end_section {
   my ($self) = @_;
 
-  Carp::confess("can't end a section because no section is active")
+  Config::MVP::Error->throw("can't end a section when no section is active")
     unless $self->current_section;
 
   $self->current_section->finalize;
@@ -200,7 +201,7 @@ exception on its own.)
 sub add_value {
   my ($self, $name, $value) = @_;
 
-  confess "can't set value without a section to work in"
+  Config::MVP::Error->throw("can't set value when no section is active")
     unless my $section = $self->current_section;
 
   $section->add_value($name => $value);

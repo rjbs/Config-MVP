@@ -134,7 +134,7 @@ has is_finalized => (
 before finalize => sub {
   my ($self) = @_;
 
-  confess "can't finalize a Config::MVP::Section that hasn't been sequenced"
+  Config::MVP::Error->throw("can't finalize unsequenced Config::MVP::Section")
     unless $self->sequence;
 };
 
@@ -158,8 +158,10 @@ has sequence => (
 
 sub _set_sequence {
   my ($self, $seq) = @_;
-  confess "can't change Config::MVP::Section's sequence after it's set"
+
+  Config::MVP::Error->throw("Config::MVP::Section cannot be resequenced")
     if $self->sequence;
+
   $self->__set_sequence($seq);
 }
 
@@ -168,10 +170,8 @@ sub sequence {
   return undef unless $self->_sequence_has_been_set;
   my $seq = $self->_sequence;
 
-  unless (defined $seq) {
-    confess "tried to access sequence for a Config::MVP::Section, "
-          . "but it has been destroyed"
-  }
+  Config::MVP::Error->throw("can't access section's destroyed sequence")
+    unless defined $seq;
 
   return $seq;
 }

@@ -13,6 +13,7 @@ class is and how it's used.
 =cut
 
 use Tie::IxHash;
+use Config::MVP::Error;
 use Config::MVP::Section;
 use Moose::Util::TypeConstraints ();
 
@@ -39,8 +40,10 @@ has assembler => (
 
 sub _set_assembler {
   my ($self, $assembler) = @_;
-  confess "can't change Config::MVP::Sequence's assembler after it's set"
+
+  Config::MVP::Error->throw("can't alter Config::MVP::Sequence's assembler")
     if $self->assembler;
+
   $self->__set_assembler($assembler);
 }
 
@@ -50,8 +53,7 @@ sub assembler {
   my $assembler = $self->_assembler;
 
   unless (defined $assembler) {
-    confess "tried to access assembler for a Config::MVP::Sequence, "
-          . "but it has been destroyed"
+    Config::MVP::Error->throw("can't access sequences's destroyed assembler")
   }
 
   return $assembler;
@@ -87,7 +89,8 @@ will be raised.
 sub add_section {
   my ($self, $section) = @_;
 
-  confess "can't add sections to finalized sequence" if $self->is_finalized;
+  Config::MVP::Error->throw("can't add sections to finalized sequence")
+    if $self->is_finalized;
 
   my $name = $section->name;
   confess "already have a section named $name" if $self->_sections->{ $name };
@@ -114,7 +117,7 @@ section.  If no section existed, the method returns false.
 sub delete_section {
   my ($self, $name) = @_;
 
-  confess "can't delete sections from finalized sequence"
+  Config::MVP::Error->throw("can't delete sections from finalized sequence")
     if $self->is_finalized;
 
   my $sections = $self->_sections;

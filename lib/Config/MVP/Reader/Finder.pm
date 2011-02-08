@@ -21,6 +21,7 @@ all possible delegates.
 
 =cut
 
+use Config::MVP::Error;
 use Module::Pluggable::Object;
 use Try::Tiny;
 
@@ -66,10 +67,12 @@ sub _which_reader {
     push @options, [ $pkg, $location ];
   }
 
-  confess "no viable configuration could be found" unless @options;
+  Config::MVP::Error->throw("no viable configuration could be found")
+    unless @options;
 
   # XXX: Improve this error message -- rjbs, 2010-05-24
-  confess "multiple possible config plugins found" if @options > 1;
+  Config::MVP::Error->throw("multiple possible config plugins found")
+    if @options > 1;
 
   return {
     'package'  => $options[0][0],
