@@ -1,7 +1,13 @@
 package Config::MVP::Error;
 use Moose;
 
-has message => (is => 'ro', isa => 'Str', required => 1);
+has message => (
+  is  => 'ro',
+  isa => 'Str',
+  required => 1,
+  lazy     => 1,
+  default  => sub { $_->ident },
+);
 
 sub as_string {
   my ($self) = @_;
