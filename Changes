@@ -1,6 +1,8 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+
+2.200000  2011-02-08 11:05:12 America/New_York
           add Config::MVP::Error for common exceptions
 
           allow class loading and class-not-found handling to be subclassed
