@@ -1,6 +1,8 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+          allow class loading and class-not-found handling to be subclassed
+          (thanks, Kent Fredric!)
 
 2.101650  2010-06-14 20:22:42 America/New_York
           require Moose 0.91 for native trait support
