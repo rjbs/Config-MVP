@@ -56,10 +56,17 @@ is_deeply($sections[2]->payload, { x => 1 });
   my $assembler = Config::MVP::Assembler->new;
 
   my $err = exception { $assembler->change_section('Foo::Missing'); };
+
   is(
     $err->ident,
     'package not installed',
     "we get a well-identifier 'not installed' exception",
+  );
+
+  is(
+    $err->package,
+    'Foo::Missing',
+    'and we stored the package',
   );
 }
 

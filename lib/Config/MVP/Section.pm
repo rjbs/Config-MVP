@@ -244,9 +244,21 @@ installed.  By default, it throws an exception.
 sub missing_package {
   my ($self, $package, $plugin) = @_ ;
 
-  Config::MVP::Error->throw({
+  my $class = Moose::Meta::Class->create_anon_class(
+    superclasses => [ 'Config::MVP::Error' ],
+    cached       => 1,
+    attributes   => [
+      Moose::Meta::Attribute->new(package => (
+        is       => 'ro',
+        required => 1,
+      )),
+    ],
+  );
+
+  $class->name->throw({
     ident   => 'package not installed',
     message => "$package (for plugin $plugin) does not appear to be installed",
+    package => $package,
   });
 }
 
