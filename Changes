@@ -1,6 +1,7 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+        - Add feature 'mvp_multivalue_arg_test' ( Kent Fredric, GH#1 )
 
 2.200008  2014-07-02 19:24:59-04:00 America/New_York
         - fix a busted link

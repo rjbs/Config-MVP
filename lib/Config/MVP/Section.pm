@@ -198,9 +198,7 @@ sub add_value {
   my $alias = $self->aliases->{ $name };
   $name = $alias if defined $alias;
 
-  my $mva = $self->multivalue_args;
-
-  if (grep { $_ eq $name } @$mva) {
+  if ( $self->multivalue_arg_test($name) ) {
     my $array = $self->payload->{$name} ||= [];
     push @$array, $value;
     return;
@@ -260,6 +258,28 @@ sub missing_package {
     message => "$package (for plugin $plugin) does not appear to be installed",
     package => $package,
   });
+}
+
+=method multivalue_arg_test
+
+  $section->multivalue_arg_test( $name );
+
+This method is called to determine if C<arg> names are C<multivalue> or not.
+
+If an attached plugin defines C<mvp_multivalue_arg_test>, it will be called and trusted.
+
+Otherwise, L</multivalue_args> is called and any C<mvp_multivalue_args> methods will be used instead.
+
+C<mvp_multivalue_arg_test> should return 1 if an argument is C<multivalue>, or return a false value otherwise.
+
+=cut
+
+sub multivalue_arg_test {
+  my ( $self, $name ) = @_;
+  if ( $self->has_package and $self->package->can('mvp_multivalue_arg_test') ) {
+    return $self->package->mvp_multivalue_arg_test( $name );
+  }
+  return grep { $_ eq $name } @{ $self->multivalue_args };
 }
 
 sub _BUILD_package_settings {
