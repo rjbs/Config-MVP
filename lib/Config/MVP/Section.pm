@@ -1,7 +1,7 @@
 package Config::MVP::Section;
 use Moose 0.91;
 
-use Class::Load 0.06 ();
+use Class::Load 0.17 ();
 use Config::MVP::Error;
 
 # ABSTRACT: one section of an MVP configuration sequence

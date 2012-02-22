@@ -3,6 +3,9 @@ Revision history for {{$dist->name}}
 {{$NEXT}}
           documentation fixes (Thanks, Gregor Herrmann of Debian!)
 
+          depend on at least version 0.17 of Class::Load, to work around a bug
+          with perl5.8.8 and Module::Runtime 0.012. (Karen Etheridge)
+
 2.200001  2011-02-11 11:13:20 America/New_York
           when throwing "package not installed", add a "package" attribute to
           Error
