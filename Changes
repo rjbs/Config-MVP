@@ -1,6 +1,8 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+
+2.200002  2012-03-15 21:16:16 America/New_York
           documentation fixes (Thanks, Gregor Herrmann of Debian!)
 
           depend on at least version 0.17 of Class::Load, to work around a bug
