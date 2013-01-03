@@ -49,7 +49,7 @@ examples that should help explain how things work.
 
 Imagine that we've got a program called DeliveryBoy that accepts mail and does
 stuff with it.  The "stuff" is entirely up to the user's configuration.  He can
-set up plugins that will be used on the message.  He write a config file that's
+set up plugins that will be used on the message.  He writes a config file that's
 read by L<Config::INI::MVP::Reader|Config::INI::MVP::Reader>, which is a thin
 wrapper around Config::MVP used to load MVP-style config from F<INI> files.
 
@@ -77,7 +77,7 @@ Here's the user's configuration:
   [Deliver]
   dest = Maildir
 
-The user will end up with a sequence with six sections, which we can represent
+The user will end up with a sequence with five sections, which we can represent
 something like this:
 
   { name    => 'Whitelist',
