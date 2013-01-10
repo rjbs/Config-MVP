@@ -12,13 +12,15 @@ be treated as bundles.  When any section is ended, if that section represented
 a bundle, its bundle contents will be unrolled and will replace it in the
 sequence.
 
-A package is considered a bundle if the this returns a defined method:
+A package is considered a bundle if C<package_bundle_method> returns a
+defined value (which is the name of a method that will be called on
+that package to retrieve its bundle config).
 
   my $method = $assembler->package_bundle_method($package);
 
 The default implementation looks for a method called C<mvp_bundle_config>, but
-C<package_bundle_method> can be replaced to allow for other bundle-identifying
-information.
+C<package_bundle_method> can be replaced with one that returns the name of a
+different bundle-identifying method-name.
 
 Bundles are expanded by a call to the assembler's
 C<replace_bundle_with_contents> method, like this:
