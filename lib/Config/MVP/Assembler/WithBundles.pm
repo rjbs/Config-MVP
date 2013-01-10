@@ -16,7 +16,7 @@ A package is considered a bundle if the this returns a defined method:
 
   my $method = $assembler->package_bundle_method($package);
 
-The default implementation looks for a method callde C<mvp_bundle_config>, but
+The default implementation looks for a method called C<mvp_bundle_config>, but
 C<package_bundle_method> can be replaced to allow for other bundle-identifying
 information.
 
