@@ -2,6 +2,9 @@ Revision history for {{$dist->name}}
 
 {{$NEXT}}
 
+2.200003  2013-01-30 21:35:34 America/New_York
+          doc fixes (Thanks, George Hartzell!)
+
 2.200002  2012-03-15 21:16:16 America/New_York
           documentation fixes (Thanks, Gregor Herrmann of Debian!)
 
