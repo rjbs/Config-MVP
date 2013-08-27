@@ -1,6 +1,7 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+          pass the arguments to missing_plugin in the right order
 
 2.200003  2013-01-30 21:35:34 America/New_York
           doc fixes (Thanks, George Hartzell!)

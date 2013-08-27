@@ -229,7 +229,7 @@ sub load_package {
   my ($self, $package, $plugin) = @_;
 
   Class::Load::load_optional_class($package)
-    or $self->missing_package($plugin, $package);
+    or $self->missing_package($package, $plugin);
 }
 
 =method missing_package
