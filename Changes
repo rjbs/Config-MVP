@@ -1,6 +1,8 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+
+2.200004  2013-08-27 12:09:19 America/New_York
           pass the arguments to missing_plugin in the right order
 
 2.200003  2013-01-30 21:35:34 America/New_York
