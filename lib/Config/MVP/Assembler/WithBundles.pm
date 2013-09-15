@@ -3,6 +3,7 @@ use Moose::Role;
 # ABSTRACT: a role to make assemblers expand bundles
 
 use Params::Util qw(_HASHLIKE _ARRAYLIKE);
+use Module::Runtime qw(use_module);
 
 =head1 DESCRIPTION
 
@@ -92,7 +93,7 @@ sub _add_bundle_contents {
   PLUGIN: for my $plugin (@bundle_config) {
     my ($name, $package, $payload) = @$plugin;
 
-    Class::MOP::load_class($package);
+    use_module($package);
 
     if (my $method = $self->package_bundle_method( $package )) {
       $self->_add_bundle_contents($method, {
