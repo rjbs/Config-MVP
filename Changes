@@ -2,68 +2,71 @@ Revision history for {{$dist->name}}
 
 {{$NEXT}}
 
+2.200006  2013-09-17 08:58:53 Asia/Tokyo
+        - fix repository data
+
 2.200005  2013-09-17 08:56:36 Asia/Tokyo
-          removed use of deprecated Class::MOP::load_class (thanks, Karen
+        - removed use of deprecated Class::MOP::load_class (thanks, Karen
           Etheridge)
 
 2.200004  2013-08-27 12:09:19 America/New_York
-          pass the arguments to missing_plugin in the right order
+        - pass the arguments to missing_plugin in the right order
 
 2.200003  2013-01-30 21:35:34 America/New_York
-          doc fixes (Thanks, George Hartzell!)
+        - doc fixes (Thanks, George Hartzell!)
 
 2.200002  2012-03-15 21:16:16 America/New_York
-          documentation fixes (Thanks, Gregor Herrmann of Debian!)
+        - documentation fixes (Thanks, Gregor Herrmann of Debian!)
 
-          depend on at least version 0.17 of Class::Load, to work around a bug
+        - depend on at least version 0.17 of Class::Load, to work around a bug
           with perl5.8.8 and Module::Runtime 0.012. (Karen Etheridge)
 
 2.200001  2011-02-11 11:13:20 America/New_York
-          when throwing "package not installed", add a "package" attribute to
+        - when throwing "package not installed", add a "package" attribute to
           Error
 
 2.200000  2011-02-08 11:05:12 America/New_York
-          add Config::MVP::Error for common exceptions
+        - add Config::MVP::Error for common exceptions
 
-          allow class loading and class-not-found handling to be subclassed
+        - allow class loading and class-not-found handling to be subclassed
           (thanks, Kent Fredric!)
 
 2.101650  2010-06-14 20:22:42 America/New_York
-          require Moose 0.91 for native trait support
+        - require Moose 0.91 for native trait support
 
 2.101540  2010-06-03 00:28:57 America/New_York
-          improve if_none to return from the proper scope (i.e., now it works)
+        - improve if_none to return from the proper scope (i.e., now it works)
 
 2.101480  2010-05-28 22:59:18 America/New_York
-          add an if_none callback to Reader::Finder; for now, private
+        - add an if_none callback to Reader::Finder; for now, private
 
 2.101460  2010-05-26 22:29:43 America/New_York
           [BREAKS BACKWARD COMPATIBILITY]
 
-          I apologize for breaking backcompat twice in a week.  I do not
+        - I apologize for breaking backcompat twice in a week.  I do not
           expect this to happen again.  -- rjbs
 
-          Config::MVP::Reader is now a base class rather than a role.
+        - Config::MVP::Reader is now a base class rather than a role.
           This significantly simplifies the use of Config::MVP readers
           and makes things easier to document.
 
 1.101451  2010-05-25 22:38:06 America/New_York
-          always finalize sections added by bundles
+        - always finalize sections added by bundles
 
 1.101450  2010-05-25 18:13:19 America/New_York
           [BREAKS BACKWARD COMPATIBILITY]
 
-          The Reader interface has been substantially overhauled.
+        - The Reader interface has been substantially overhauled.
 
-          Readers no longer have persistent Assembler, but now must be handed
+        - Readers no longer have persistent Assembler, but now must be handed
           one (or will generate one as needed)
 
-          the arguments for Reader->read_config have changed
+        - the arguments for Reader->read_config have changed
 
-          classes implementing Reader are required to provide a
+        - classes implementing Reader are required to provide a
           read_into_assembler method, now
 
-          Reader::Findable has been broken into Findable and
+        - Reader::Findable has been broken into Findable and
           Findable::ByExtension
 
 0.101410  2010-05-21 22:09:48 America/New_York
