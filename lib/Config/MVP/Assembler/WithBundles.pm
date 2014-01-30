@@ -114,6 +114,8 @@ sub _add_bundle_contents {
           my @v = ref $payload->{$name}
                 ? @{$payload->{$name}}
                 : $payload->{$name};
+          Carp::confess("got impossible zero-value <$name> key")
+            unless @v;
           $section->add_value($name => $_) for @v;
         }
       } elsif (_ARRAYLIKE($payload)) {
