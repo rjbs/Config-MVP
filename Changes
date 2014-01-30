@@ -2,6 +2,10 @@ Revision history for {{$dist->name}}
 
 {{$NEXT}}
 
+2.200007  2014-01-29 21:04:25-05:00 America/New_York
+        - throw an exception when a bundle reports an impossible situation,
+          like { value => [] }; https://github.com/rjbs/Config-MVP/issues/5
+
 2.200006  2013-09-17 08:58:53 Asia/Tokyo
         - fix repository data
 
