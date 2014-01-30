@@ -1,6 +1,7 @@
 package Config::MVP::Reader::Findable;
-use Moose::Role;
 # ABSTRACT: a config class that Config::MVP::Reader::Finder can find
+
+use Moose::Role;
 
 =head1 DESCRIPTION
 

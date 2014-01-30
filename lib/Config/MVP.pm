@@ -1,5 +1,6 @@
 package Config::MVP;
 # ABSTRACT: multivalue-property package-oriented configuration
+
 use strict;
 use warnings;
 

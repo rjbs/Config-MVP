@@ -1,10 +1,10 @@
 package Config::MVP::Section;
+# ABSTRACT: one section of an MVP configuration sequence
+
 use Moose 0.91;
 
 use Class::Load 0.17 ();
 use Config::MVP::Error;
-
-# ABSTRACT: one section of an MVP configuration sequence
 
 =head1 DESCRIPTION
 

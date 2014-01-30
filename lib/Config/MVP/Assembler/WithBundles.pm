@@ -1,6 +1,7 @@
 package Config::MVP::Assembler::WithBundles;
-use Moose::Role;
 # ABSTRACT: a role to make assemblers expand bundles
+
+use Moose::Role;
 
 use Params::Util qw(_HASHLIKE _ARRAYLIKE);
 use Module::Runtime qw(use_module);

@@ -1,7 +1,8 @@
 package Config::MVP::Reader::Hash;
+# ABSTRACT: a reader that tries to cope with a plain old hashref
+
 use Moose;
 extends 'Config::MVP::Reader';
-# ABSTRACT: a reader that tries to cope with a plain old hashref
 
 =head1 SYNOPSIS
 

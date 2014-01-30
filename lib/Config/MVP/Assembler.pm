@@ -1,6 +1,7 @@
 package Config::MVP::Assembler;
-use Moose;
 # ABSTRACT: multivalue-property config-loading state machine
+
+use Moose;
 
 use Config::MVP::Error;
 use Config::MVP::Sequence;

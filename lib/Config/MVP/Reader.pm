@@ -1,6 +1,7 @@
 package Config::MVP::Reader;
-use Moose;
 # ABSTRACT: object to read config from storage into an assembler
+
+use Moose;
 
 use Config::MVP::Assembler;
 

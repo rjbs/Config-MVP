@@ -1,6 +1,7 @@
 package Config::MVP::Error;
-use Moose;
 # ABSTRACT: common exceptions class
+
+use Moose;
 
 has message => (
   is  => 'ro',

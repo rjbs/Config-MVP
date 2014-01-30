@@ -1,6 +1,7 @@
 package Config::MVP::Sequence;
-use Moose 0.91;
 # ABSTRACT: an ordered set of named configuration sections
+
+use Moose 0.91;
 
 =head1 DESCRIPTION
 

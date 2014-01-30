@@ -1,7 +1,8 @@
 package Config::MVP::Reader::Finder;
+# ABSTRACT: a reader that finds an appropriate file
+
 use Moose;
 extends 'Config::MVP::Reader';
-# ABSTRACT: a reader that finds an appropriate file
 
 =head1 DESCRIPTION
 
