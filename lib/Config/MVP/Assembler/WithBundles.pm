@@ -4,7 +4,7 @@ package Config::MVP::Assembler::WithBundles;
 use Moose::Role;
 
 use Params::Util qw(_HASHLIKE _ARRAYLIKE);
-use Module::Runtime qw(use_module);
+use Class::Load 0.17 ();
 
 =head1 DESCRIPTION
 
@@ -86,6 +86,34 @@ sub replace_bundle_with_contents {
   });
 };
 
+sub load_package {
+  my ($self, $package, $plugin) = @_;
+
+  Class::Load::load_optional_class($package)
+    or $self->missing_package($package, $plugin);
+}
+
+sub missing_package {
+  my ($self, $package, $plugin) = @_ ;
+
+  my $class = Moose::Meta::Class->create_anon_class(
+    superclasses => [ 'Config::MVP::Error' ],
+    cached       => 1,
+    attributes   => [
+      Moose::Meta::Attribute->new(package => (
+        is       => 'ro',
+        required => 1,
+      )),
+    ],
+  );
+
+  $class->name->throw({
+    ident   => 'package not installed',
+    message => "$package (for plugin $plugin) does not appear to be installed",
+    package => $package,
+  });
+}
+
 sub _add_bundle_contents {
   my ($self, $method, $arg) = @_;
 
@@ -94,7 +122,7 @@ sub _add_bundle_contents {
   PLUGIN: for my $plugin (@bundle_config) {
     my ($name, $package, $payload) = @$plugin;
 
-    use_module($package);
+    $self->load_package($package, $name);
 
     if (my $method = $self->package_bundle_method( $package )) {
       $self->_add_bundle_contents($method, {
