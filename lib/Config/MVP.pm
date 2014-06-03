@@ -51,7 +51,7 @@ examples that should help explain how things work.
 Imagine that we've got a program called DeliveryBoy that accepts mail and does
 stuff with it.  The "stuff" is entirely up to the user's configuration.  He can
 set up plugins that will be used on the message.  He writes a config file that's
-read by L<Config::INI::MVP::Reader|Config::INI::MVP::Reader>, which is a thin
+read by L<Config::MVP::Reader::INI|Config::MVP::Reader::INI>, which is a thin
 wrapper around Config::MVP used to load MVP-style config from F<INI> files.
 
 Here's the user's configuration:
