@@ -1,6 +1,10 @@
 use strict;
 use warnings;
 
+{ no warnings 'once';
+  @Config::MVP::Reader::Finder::DONT_FIND = qw( Config::MVP::Reader::INI );
+}
+
 use Test::More;
 
 use lib 't/lib';

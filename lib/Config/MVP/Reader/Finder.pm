@@ -39,6 +39,8 @@ sub default_search_path {
   return qw(Config::MVP::Reader)
 }
 
+our @DONT_FIND;
+
 has _module_pluggable_object => (
   is => 'ro',
   init_arg => undef,
@@ -48,6 +50,9 @@ has _module_pluggable_object => (
       search_path => [ $self->default_search_path ],
       inner       => 0,
       require     => 1,
+
+      # This facility here entirely for testing. -- rjbs, 2014-07-02
+      except      => \@DONT_FIND,
     );
   },
 );
