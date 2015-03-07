@@ -87,14 +87,14 @@ sub replace_bundle_with_contents {
 };
 
 sub load_package {
-  my ($self, $package, $plugin) = @_;
+  my ($self, $package, $section_name) = @_;
 
   Class::Load::load_optional_class($package)
-    or $self->missing_package($package, $plugin);
+    or $self->missing_package($package, $section_name);
 }
 
 sub missing_package {
-  my ($self, $package, $plugin) = @_ ;
+  my ($self, $package, $section_name) = @_ ;
 
   my $class = Moose::Meta::Class->create_anon_class(
     superclasses => [ 'Config::MVP::Error' ],
@@ -104,13 +104,18 @@ sub missing_package {
         is       => 'ro',
         required => 1,
       )),
+      Moose::Meta::Attribute->new(section_name => (
+        is       => 'ro',
+        required => 1,
+      )),
     ],
   );
 
   $class->name->throw({
     ident   => 'package not installed',
-    message => "$package (for plugin $plugin) does not appear to be installed",
+    message => "$package (for section $section_name) does not appear to be installed",
     package => $package,
+    section_name => $section_name,
   });
 }
 
