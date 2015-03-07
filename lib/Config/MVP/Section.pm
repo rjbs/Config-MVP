@@ -216,7 +216,7 @@ sub add_value {
 
 =method load_package
 
-  $section->load_package($package, $plugin);
+  $section->load_package($package, $section_name);
 
 This method is used to ensure that the given C<$package> is loaded, and is
 called whenever a section with a package is created.  By default, it delegates
@@ -226,15 +226,15 @@ L<missing_package> method.  Errors in compilation are not suppressed.
 =cut
 
 sub load_package {
-  my ($self, $package, $plugin) = @_;
+  my ($self, $package, $section_name) = @_;
 
   Class::Load::load_optional_class($package)
-    or $self->missing_package($package, $plugin);
+    or $self->missing_package($package, $section_name);
 }
 
 =method missing_package
 
-  $section->missing_package($package, $plugin);
+  $section->missing_package($package, $section_name);
 
 This method is called when C<load_package> encounters a package that is not
 installed.  By default, it throws an exception.
@@ -242,7 +242,7 @@ installed.  By default, it throws an exception.
 =cut
 
 sub missing_package {
-  my ($self, $package, $plugin) = @_ ;
+  my ($self, $package, $section_name) = @_ ;
 
   my $class = Moose::Meta::Class->create_anon_class(
     superclasses => [ 'Config::MVP::Error' ],
@@ -252,13 +252,18 @@ sub missing_package {
         is       => 'ro',
         required => 1,
       )),
+      Moose::Meta::Attribute->new(section_name => (
+        is       => 'ro',
+        required => 1,
+      )),
     ],
   );
 
   $class->name->throw({
     ident   => 'package not installed',
-    message => "$package (for plugin $plugin) does not appear to be installed",
+    message => "$package (for section $section_name) does not appear to be installed",
     package => $package,
+    section_name => $section_name,
   });
 }
 

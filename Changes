@@ -1,6 +1,8 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+        - module-loading exceptions now include a section_name attribute for
+          the name of the section being assembled
 
 2.200008  2014-07-02 19:24:59-04:00 America/New_York
         - fix a busted link
