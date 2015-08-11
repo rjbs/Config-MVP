@@ -28,6 +28,9 @@ L<Config::MVP::Assembler|Config::MVP::Assembler>:
 
 This doesn't make sense?  Well, read on.
 
+(You can also read the L<2009 RJBS Advent Calendar
+article|http://advent.rjbs.manxome.org/2009/2009-12-20.html> on Config::MVP!)
+
 =head1 DESCRIPTION
 
 MVP is a mechanism for loading configuration (or other information) for
