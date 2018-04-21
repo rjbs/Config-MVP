@@ -110,7 +110,9 @@ sub read_config {
 
   return $instead unless $which;
 
-  my $reader = $which->{package}->new;
+  my $reader = $which->{package}->new({
+    add_cwd_to_lib => $self->add_cwd_to_lib,
+  });
 
   return $reader->read_config( $which->{location}, $arg );
 }

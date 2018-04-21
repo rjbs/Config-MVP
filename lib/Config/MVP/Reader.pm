@@ -4,6 +4,7 @@ package Config::MVP::Reader;
 use Moose;
 
 use Config::MVP::Assembler;
+use Cwd ();
 
 =head1 SYNOPSIS
 
@@ -19,6 +20,20 @@ A Config::MVP::Reader exists to read configuration data from storage (like a
 file) and convert that data into instructions to a L<Config::MVP::Assembler>,
 which will in turn convert them into a L<Config::MVP::Sequence>, the final
 product.
+
+=attribute add_cwd_to_lib
+
+If true (which it is by default) then the current working directly will be
+locally added to C<@INC> during config loading.  This helps deal with changes
+made in Perl v5.26.1.
+
+=cut
+
+has add_cwd_to_lib => (
+  is  => 'ro',
+  isa => 'Bool',
+  default => 1,
+);
 
 =method read_config
 
@@ -38,7 +53,9 @@ If no assembler argument is passed, one will be constructed by calling the
 Reader's C<build_assembler> method.
 
 Subclasses should generally not override C<read_config>, but should instead
-implement a C<read_into_assembler> method, described below.
+implement a C<read_into_assembler> method, described below.  If a subclass
+I<does> override C<read_config> it should take care to respect the
+C<add_cwd_to_lib> attribute, above.
 
 =cut
 
@@ -50,7 +67,14 @@ sub read_config {
 
   my $assembler = $arg->{assembler} || $self->build_assembler;
 
-  $self->read_into_assembler($location, $assembler);
+  {
+    local @INC = @INC;
+    if ($self->add_cwd_to_lib) {
+      my $cwd = Cwd::getcwd();
+      push @INC, $cwd unless grep {; $_ eq $cwd } @INC;
+    }
+    $self->read_into_assembler($location, $assembler);
+  }
 
   return $assembler->sequence;
 }
