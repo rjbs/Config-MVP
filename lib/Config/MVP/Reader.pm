@@ -23,7 +23,7 @@ product.
 
 =attr add_cwd_to_lib
 
-If true (which it is by default) then the current working directly will be
+If true (which it is by default) then the current working directory will be
 locally added to C<@INC> during config loading.  This helps deal with changes
 made in Perl v5.26.1.
 
