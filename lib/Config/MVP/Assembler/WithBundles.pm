@@ -144,7 +144,7 @@ sub _add_bundle_contents {
       if (_HASHLIKE($payload)) {
         # XXX: Clearly this is a hack. -- rjbs, 2009-08-24
         for my $name (keys %$payload) {
-          my @v = ref $payload->{$name}
+          my @v = ref $payload->{$name} eq ref []
                 ? @{$payload->{$name}}
                 : $payload->{$name};
           Carp::confess("got impossible zero-value <$name> key")
