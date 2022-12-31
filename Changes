@@ -1,6 +1,8 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+
+2.200013  2022-12-31 13:48:05-05:00 America/New_York
         - update packaging and metadata
         - minimum required Perl is now v5.12
         - I know, there are still some open issues at this point, but I am
