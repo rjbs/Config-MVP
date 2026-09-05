@@ -272,7 +272,7 @@ sub _BUILD_package_settings {
 
   return unless defined (my $pkg = $self->package);
 
-  confess "illegal package name $pkg" unless Params::Util::_CLASS($pkg);
+  confess "illegal package name $pkg" unless Params::SomeUtil::_CLASS($pkg);
 
   $self->load_package($pkg, $self->name);
 

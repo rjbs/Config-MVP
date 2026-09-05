@@ -3,7 +3,7 @@ package Config::MVP::Assembler::WithBundles;
 
 use Moose::Role;
 
-use Params::Util qw(_HASHLIKE _ARRAYLIKE);
+use Params::SomeUtil qw(_HASHLIKE _ARRAYLIKE);
 use Class::Load 0.17 ();
 
 =head1 DESCRIPTION
