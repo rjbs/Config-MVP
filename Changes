@@ -1,6 +1,8 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+
+2.200014  2026-09-05 22:56:05+09:30 Australia/Adelaide
         - switch from Params::Util to Params::SomeUtil
 
 2.200013  2022-12-31 13:48:05-05:00 America/New_York
