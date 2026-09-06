@@ -5,6 +5,7 @@ use Moose 0.91;
 
 use Class::Load 0.17 ();
 use Config::MVP::Error;
+use Params::SomeUtil ();
 
 =head1 DESCRIPTION
 
