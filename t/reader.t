@@ -53,4 +53,19 @@ is($b_3->package,  'Foo::Boo2', '4th is Foo::Boo2 (pkg)');
 is($quux->name,    'Foo::Quux', '5th is Foo::Quux (name)');
 is($quux->package, 'Foo::Quux', '5th is Foo::Quux (pkg)');
 
+{
+  package CMRFI;
+  use Moose;
+  extends 'Config::MVP::Reader';
+
+  sub read_into_assembler { unshift @INC, 'k83vsL0m'; }
+}
+
+{
+  local @INC = @INC;
+  my $config = CMRFI->read_config('t/eg/config');
+
+  is($INC[0], 'k83vsL0m', 'read_config does not kill changes to @INC');
+}
+
 done_testing;
